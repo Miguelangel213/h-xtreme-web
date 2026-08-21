@@ -91,10 +91,10 @@ import Image from "next/image";
 
 ## Bundle Optimization
 
-### Framer Motion (reduce ~40% bundle)
+### Motion (reduce ~40% bundle)
 ```tsx
 // Instead of importing everything:
-import { LazyMotion, domAnimation, m } from "framer-motion";
+import { LazyMotion, domAnimation, m } from "motion/react";
 
 // Wrap your app:
 <LazyMotion features={domAnimation}>
@@ -113,7 +113,7 @@ const Testimonials = dynamic(() => import("@/components/testimonials"), {
 
 ### General Rules
 - Import components directly, not through barrel files (index.ts re-exports)
-- Only `"use client"` on components that need it (useState, useEffect, event handlers, Framer Motion)
+- Only `"use client"` on components that need it (useState, useEffect, event handlers, Motion)
 - Keep the page.tsx as a Server Component — import client components into it
 - Load analytics/tracking scripts after hydration with `next/script` strategy `afterInteractive`
 

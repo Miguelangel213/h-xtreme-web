@@ -1,6 +1,6 @@
 # Design Guide
 
-Fallback reference when the `frontend-design` and `humanizer` skills are not installed. Follow these rules for every landing page you build.
+Fallback reference when the `frontend-design`, `humanizer`, and `animate` skills are not installed. Follow these rules for every landing page you build.
 
 ---
 
@@ -9,6 +9,127 @@ Fallback reference when the `frontend-design` and `humanizer` skills are not ins
 If you showed this interface to someone and said "AI made this," would they believe you immediately? If yes, redesign it.
 
 A distinctive interface should make someone ask "how was this made?" — not "which AI made this?"
+
+---
+
+## Tailwind v4 Token Setup (read this before writing any CSS)
+
+`create-next-app@latest` scaffolds **Tailwind CSS 4**. There is **no `tailwind.config.ts`**
+and there must not be one. In v4 a custom property becomes a utility class only if it is
+declared inside a `@theme` block under a recognized namespace:
+
+| Namespace | Declaring | Generates |
+|-----------|-----------|-----------|
+| `--color-*` | `--color-primary` | `bg-primary`, `text-primary`, `border-primary`, `ring-primary` |
+| `--text-*` | `--text-fluid-xl` | `text-fluid-xl` |
+| `--spacing-*` | `--spacing-section` | `py-section`, `px-section`, `gap-section`, `mt-section` |
+| `--font-*` | `--font-heading` | `font-heading` |
+| `--ease-*` | `--ease-out` | `ease-out` |
+| `--radius-*` | `--radius-lg` | `rounded-lg` |
+
+**A `--color-primary` declared in plain `:root` generates nothing.** `bg-primary` will not
+exist and the class will silently do nothing. This is the single most common way to ship a
+page where half the styling is missing and nothing errors.
+
+Use `@theme inline` when the value points at another custom property that is re-bound at
+runtime (anything that changes under `.dark`) — `inline` is what makes `bg-primary/90`
+opacity modifiers resolve correctly. Use plain `@theme` for static values like `clamp()`
+literals and cubic-beziers.
+
+`shadcn init` writes `site/src/app/globals.css` already containing `@import "tailwindcss"`,
+an `@theme inline` map, and `:root` / `.dark` token blocks. **Edit the VALUES in `:root` and
+`.dark`; append your own `@theme` block. Never overwrite the file.**
+
+```css
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));   /* replaces v3's darkMode: ["class"] */
+
+/* 1. SEMANTIC TOKENS — shadcn's contract. Every generated component reads these
+      names. Put your OKLCH brand values here. Do not rename them. */
+:root {
+  --radius: 0.625rem;
+  --background:         oklch(98% 0.010 250);
+  --foreground:         oklch(15% 0.020 250);
+  --primary:            oklch(55% 0.150 250);
+  --primary-foreground: oklch(98% 0.010 250);
+  --accent:             oklch(65% 0.200  30);
+  --muted:              oklch(95% 0.015 250);
+  --muted-foreground:   oklch(45% 0.020 250);
+  --border:             oklch(90% 0.015 250);
+  --ring:               oklch(55% 0.150 250);
+}
+
+/* Dark is NOT inverted light: different surfaces, REDUCED chroma on accents,
+   and borders as translucent white rather than a solid grey. */
+.dark {
+  --background:         oklch(17% 0.020 250);
+  --foreground:         oklch(94% 0.010 250);
+  --primary:            oklch(72% 0.110 250);
+  --primary-foreground: oklch(17% 0.020 250);
+  --accent:             oklch(72% 0.140  30);
+  --muted:              oklch(27% 0.025 250);
+  --muted-foreground:   oklch(68% 0.018 250);
+  --border:             oklch(100% 0 0 / 12%);
+  --ring:               oklch(72% 0.110 250);
+}
+
+/* 2. TOKEN -> UTILITY MAP — written by shadcn init. `inline` is required so
+      bg-primary follows .dark at runtime. Do not delete. */
+@theme inline {
+  --color-background:         var(--background);
+  --color-foreground:         var(--foreground);
+  --color-primary:            var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent:             var(--accent);
+  --color-muted:              var(--muted);
+  --color-muted-foreground:   var(--muted-foreground);
+  --color-border:             var(--border);
+  --color-ring:               var(--ring);
+  --radius-lg: var(--radius);
+
+  /* next/font emits --font-display and --font-text on <body>. The source names
+     MUST differ from the theme keys, or the mapping self-references and resolves
+     to nothing. */
+  --font-heading: var(--font-display);
+  --font-body:    var(--font-text);
+  --font-sans:    var(--font-text);
+}
+
+/* 3. PROJECT TOKENS — you append this. Static values, so plain @theme. */
+@theme {
+  --text-fluid-sm:   clamp(0.875rem, 0.80rem + 0.35vw, 1rem);
+  --text-fluid-base: clamp(1rem,     0.90rem + 0.50vw, 1.125rem);
+  --text-fluid-lg:   clamp(1.25rem,  1.00rem + 1.25vw, 1.75rem);
+  --text-fluid-xl:   clamp(1.75rem,  1.20rem + 2.75vw, 3rem);
+  --text-fluid-2xl:  clamp(2.25rem,  1.50rem + 3.75vw, 4.5rem);
+
+  --spacing-section:   clamp(4rem,   8vw, 8rem);
+  --spacing-component: clamp(1.5rem, 3vw, 3rem);
+  --spacing-element:   clamp(0.5rem, 1vw, 1rem);
+
+  --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  /* Overwrite the scaffold's `font-family: Arial, Helvetica, sans-serif` —
+     Arial is on this guide's banned list and create-next-app hardcodes it. */
+  body { @apply bg-background text-foreground font-body; }
+  h1, h2, h3 { @apply font-heading; }
+}
+```
+
+The `fluid-` prefix on the type scale is deliberate: naming them `--text-xl` would silently
+replace Tailwind's built-in `text-xl` everywhere, including inside generated shadcn
+components. Additive is safer.
+
+**Two things that do NOT carry over from v3:** there is no `container` config (use
+`mx-auto max-w-6xl px-6`), and `tailwindcss-animate` is replaced by `tw-animate-css`, which
+`shadcn init` installs. Do not hand-add either.
 
 ---
 
@@ -34,35 +155,44 @@ Inter, Roboto, Arial, Open Sans, Helvetica, system-ui defaults. These are the AI
 ```tsx
 import { Space_Grotesk, DM_Sans } from "next/font/google";
 
-const heading = Space_Grotesk({
+// Source variable names MUST differ from the Tailwind theme keys
+// (--font-heading / --font-body), or the @theme inline mapping
+// self-references and resolves to nothing.
+const display = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-heading",
+  variable: "--font-display",
   display: "swap",
 });
 
-const body = DM_Sans({
+const text = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-body",
+  variable: "--font-text",
   display: "swap",
 });
 
-// In layout.tsx body tag:
-<body className={`${heading.variable} ${body.variable} font-body`}>
+// In layout.tsx:
+<body className={`${display.variable} ${text.variable} antialiased`}>
 ```
+
+`globals.css` bridges these to utilities inside `@theme inline`:
+`--font-heading: var(--font-display)` and `--font-body: var(--font-text)`.
+Only then do `font-heading` and `font-body` exist as classes.
 
 ### Typography System Architecture
 
 **Vertical rhythm:** Line-height is the base unit for all spacing. If body line-height is 24px, all vertical spacing should be multiples of 24px (or 12px for half-rhythm).
 
-**5-size modular scale using `clamp()`:**
+**5-size modular scale using `clamp()`** — inside `@theme`, never bare `:root`:
 ```css
---text-xs:  clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
---text-sm:  clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
---text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
---text-lg:  clamp(1.25rem, 1rem + 1.25vw, 1.75rem);
---text-xl:  clamp(1.75rem, 1.2rem + 2.75vw, 3rem);
---text-2xl: clamp(2.25rem, 1.5rem + 3.75vw, 4.5rem);
+@theme {
+  --text-fluid-sm:   clamp(0.875rem, 0.80rem + 0.35vw, 1rem);
+  --text-fluid-base: clamp(1rem,     0.90rem + 0.50vw, 1.125rem);
+  --text-fluid-lg:   clamp(1.25rem,  1.00rem + 1.25vw, 1.75rem);
+  --text-fluid-xl:   clamp(1.75rem,  1.20rem + 2.75vw, 3rem);
+  --text-fluid-2xl:  clamp(2.25rem,  1.50rem + 3.75vw, 4.5rem);
+}
 ```
+Usage: `<h1 className="text-fluid-2xl font-heading">`, `<p className="text-fluid-base">`.
 
 **Font weight hierarchy:**
 - 300 (Light): secondary text, captions
@@ -147,12 +277,17 @@ Always use OKLCH for color definitions — it's perceptually uniform (HSL is not
 ### 4pt Base Unit
 All spacing should be multiples of 4px: 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96, 128.
 
-**Fluid spacing with `clamp()`:**
+**Fluid spacing with `clamp()`** — the `--spacing-*` namespace generates padding, margin,
+gap and size utilities from a single key:
 ```css
---space-section: clamp(4rem, 8vw, 8rem);     /* Between major sections */
---space-component: clamp(1.5rem, 3vw, 3rem); /* Between components */
---space-element: clamp(0.5rem, 1vw, 1rem);   /* Between elements */
+@theme {
+  --spacing-section:   clamp(4rem,   8vw, 8rem);
+  --spacing-component: clamp(1.5rem, 3vw, 3rem);
+  --spacing-element:   clamp(0.5rem, 1vw, 1rem);
+}
 ```
+Usage: `<section className="py-section">`, `<ul className="gap-element">`. Named keys ADD to
+the numeric scale — `p-4` and `gap-8` keep working.
 
 ### Container Queries
 Use `@container` for component-level responsiveness:
@@ -214,55 +349,117 @@ Unless the user specifies otherwise:
 
 ## Motion
 
-### The 100/300/500 Timing Rule
-- **100-150ms**: Micro-feedback (button press, toggle, hover)
-- **200-300ms**: State transitions (tab switch, dropdown open, accordion)
-- **300-500ms**: Layout changes (page transitions, modal entrance)
-- **500-800ms**: Complex entrance animations (hero reveal, staggered list)
+**Authority: `.claude/skills/animate/SKILL.md` and `emil-design-eng`.** This section is the
+minimum viable set for when those skills aren't loaded. Where they disagree with this page,
+they win.
 
-**Exit faster than enter:** Use ~75% of the entrance duration for exits.
+### Easing — three curves, no others
 
-### Easing
-- Use exponential easing: `ease-out-quart` or `cubic-bezier(0.25, 1, 0.5, 1)`
-- For spring-like motion in Framer Motion: `type: "spring", stiffness: 300, damping: 30`
-- Never use bounce or elastic easing — it feels dated and tacky
+```css
+--ease-out:    cubic-bezier(0.23, 1, 0.32, 1);   /* entering AND exiting */
+--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);  /* moving/morphing on screen */
+--ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);   /* drawers, sheets */
+```
+
+Built-in CSS easings are too weak. **Never use `ease-in` on UI** — it delays the exact moment
+the user is watching, so exits use `ease-out` too. Hover and color changes may use plain
+`ease`; constant motion (marquee, progress) uses `linear`. Never bounce or elastic — real
+objects decelerate smoothly.
+
+### Duration — by element, not by bucket
+
+| Element | Duration |
+|---------|----------|
+| Button press feedback | 100-160ms |
+| Tooltips, small popovers | 125-200ms |
+| Dropdowns, selects | 150-250ms |
+| Modals, drawers | 200-500ms |
+| **Marketing** — hero reveal, scroll reveal | 500-800ms |
+
+**UI stays under 300ms.** The marketing row is the exception a landing page lives in — know
+which one you're animating. Exits run at roughly 75% of the entrance.
+
+### Springs
+
+```js
+{ type: "spring", duration: 0.5, bounce: 0.2 }   // Apple-style, easier to reason about
+```
+
+Bounce 0.1-0.3, and only for drag-to-dismiss or a deliberately playful moment.
+
+### Should it animate at all?
+
+| How often the user sees it | Verdict |
+|---|---|
+| 100+/day, or keyboard-initiated | **Never animate** |
+| Tens/day (hover, list nav) | Near-imperceptible, or nothing |
+| Occasional (modal, drawer, toast) | Standard |
+| Rare / first-time (hero on load, success) | The delight budget lives here |
+
+Name the purpose before you build: feedback, spatial consistency, state indication,
+preventing a jarring change, or explanation. Can't name it? Don't build it.
 
 ### Rules
-- Animate only `transform` and `opacity`, never layout properties (width, height, padding, margin)
-- One well-orchestrated page load (staggered reveals) beats scattered micro-interactions
-- Use Framer Motion for React animations
-- Always respect `prefers-reduced-motion`
 
-### Stagger Pattern (Framer Motion)
+- Animate `transform` and `opacity` only (`clip-path` is the sanctioned exception for
+  reveals). Never `width` / `height` / `margin` / `padding` / `top` / `left`.
+- For height animations use `grid-template-rows: 0fr -> 1fr`, not `height`.
+- **Never `scale(0)`** — start at `scale(0.95)` + `opacity: 0`. Nothing appears from nothing.
+- `transform-origin` at the trigger for popovers and menus; modals stay centered.
+- `translateY(100%)` (percentages) over hardcoded pixels — it adapts to content.
+- Never drive a child's transform from a CSS variable on the parent — it recalcs every child.
+- One well-orchestrated page load beats scattered micro-interactions.
+
+### Stagger
+
 ```tsx
+import { motion } from "motion/react";
+
 const container = {
   hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.06, delayChildren: 0.1 }
-  }
+  show: { opacity: 1, transition: { staggerChildren: 0.06, delayChildren: 0.1 } }
 };
 
 const item = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, transform: "translateY(20px)" },
   show: {
-    opacity: 1, y: 0,
-    transition: { duration: 0.5, ease: [0.25, 1, 0.5, 1] }
+    opacity: 1,
+    transform: "translateY(0px)",
+    transition: { duration: 0.5, ease: [0.23, 1, 0.32, 1] }
   }
 };
 ```
 
-### Reduced Motion Pattern
-```tsx
-const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+Stagger 30-80ms between items. Note the **full `transform` string** — the `x` / `y` / `scale`
+shorthands are not hardware-accelerated and drop frames while the page is loading.
 
-// In Framer Motion:
-<motion.div
-  initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: prefersReducedMotion ? 0 : 0.5 }}
-/>
+### Reduced motion — gentler, not zero
+
+```tsx
+"use client";
+import { motion, useReducedMotion } from "motion/react";
+
+export function Reveal({ children }: { children: React.ReactNode }) {
+  // Use the hook. NEVER touch `window` at module scope: in a Next client component
+  // the module body still evaluates on the server, `window` is undefined, and the
+  // page throws during prerender.
+  const reduce = useReducedMotion();
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, transform: reduce ? "none" : "translateY(20px)" }}
+      animate={{ opacity: 1, transform: "translateY(0px)" }}
+      transition={{ duration: reduce ? 0.2 : 0.5, ease: [0.23, 1, 0.32, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 ```
+
+Keep opacity and color transitions that aid comprehension. Remove movement and position
+changes. Gate hover motion behind `@media (hover: hover) and (pointer: fine)` — touch devices
+fire false hovers on tap.
 
 ---
 

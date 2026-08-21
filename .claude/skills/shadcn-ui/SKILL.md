@@ -9,14 +9,6 @@ progressive_disclosure:
 ---
 # shadcn/ui - Component Library
 
----
-progressive_disclosure:
-  entry_point: summary, when_to_use, quick_start
-  estimated_tokens:
-    entry: 85
-    full: 4800
----
-
 ## Summary
 
 shadcn/ui is a collection of re-usable React components built with Radix UI primitives and styled with Tailwind CSS. Unlike traditional component libraries, shadcn/ui components are **copied directly into your project**, giving you full ownership and customization control. Components are accessible, customizable, and open source.
@@ -46,7 +38,7 @@ shadcn/ui is a collection of re-usable React components built with Radix UI prim
 
 ```bash
 # Initialize shadcn/ui in your project
-npx shadcn-ui@latest init
+npx shadcn@latest init
 
 # Follow interactive prompts:
 # - TypeScript? (yes/no)
@@ -64,12 +56,12 @@ npx shadcn-ui@latest init
 
 ```bash
 # Add individual components
-npx shadcn-ui@latest add button
-npx shadcn-ui@latest add card
-npx shadcn-ui@latest add dialog
+npx shadcn@latest add button
+npx shadcn@latest add card
+npx shadcn@latest add dialog
 
 # Add multiple components at once
-npx shadcn-ui@latest add button card dialog form input
+npx shadcn@latest add button card dialog form input
 ```
 
 ### Basic Usage
@@ -608,7 +600,7 @@ import {
 **Change base color scheme**:
 ```bash
 # Regenerate components with new base color
-npx shadcn-ui@latest init
+npx shadcn@latest init
 
 # Choose new base: Slate, Gray, Zinc, Neutral, Stone
 ```
@@ -753,10 +745,10 @@ npx create-next-app@latest my-app --typescript --tailwind --app
 
 # Initialize shadcn/ui
 cd my-app
-npx shadcn-ui@latest init
+npx shadcn@latest init
 
 # Add components
-npx shadcn-ui@latest add button card form
+npx shadcn@latest add button card form
 ```
 
 ### Server Components
@@ -1055,61 +1047,61 @@ export function PricingCard({
 
 ```bash
 # Interactive init
-npx shadcn-ui@latest init
+npx shadcn@latest init
 
 # Non-interactive with defaults
-npx shadcn-ui@latest init -y
+npx shadcn@latest init -y
 
 # Specify options
-npx shadcn-ui@latest init --typescript --tailwind
+npx shadcn@latest init --typescript --tailwind
 ```
 
 ### Add Components
 
 ```bash
 # Single component
-npx shadcn-ui@latest add button
+npx shadcn@latest add button
 
 # Multiple components
-npx shadcn-ui@latest add button card dialog form
+npx shadcn@latest add button card dialog form
 
 # All components (not recommended - adds everything)
-npx shadcn-ui@latest add --all
+npx shadcn@latest add --all
 
 # Specific version
-npx shadcn-ui@latest add button@1.0.0
+npx shadcn@latest add button@1.0.0
 
 # Overwrite existing
-npx shadcn-ui@latest add button --overwrite
+npx shadcn@latest add button --overwrite
 
 # Different path
-npx shadcn-ui@latest add button --path src/components/ui
+npx shadcn@latest add button --path src/components/ui
 ```
 
 ### Diff Components
 
 ```bash
 # Check for component updates
-npx shadcn-ui@latest diff
+npx shadcn@latest diff
 
 # Diff specific component
-npx shadcn-ui@latest diff button
+npx shadcn@latest diff button
 
 # Show what would change
-npx shadcn-ui@latest diff --check
+npx shadcn@latest diff --check
 ```
 
 ### Update Components
 
 ```bash
 # Update all components
-npx shadcn-ui@latest update
+npx shadcn@latest update
 
 # Update specific components
-npx shadcn-ui@latest update button card
+npx shadcn@latest update button card
 
 # Preview changes before applying
-npx shadcn-ui@latest update --dry-run
+npx shadcn@latest update --dry-run
 ```
 
 ## Advanced Patterns

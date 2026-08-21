@@ -93,8 +93,19 @@ The skill checks:
 | `landing` | Landing page structure and CTA strategies | `"saas"` |
 | `chart` | Chart types and library recommendations | `"financial dashboard"` |
 | `ux` | Best practices and anti-patterns | `"form design"` |
+| `icons` | Icon set recommendations by style and product type | `"outline minimal"` |
+| `web` | App/web interface patterns and severity-rated guidelines | `"navigation"` |
+| `react` | React performance guidelines | `"rerender"` |
+| `google-fonts` | Full Google Fonts index (1,900+ families) with axes, subsets, popularity | `"variable display"` |
 
-**Available `--stack` values:** `html-tailwind` (default), `react`, `nextjs`, `astro`, `vue`, `nuxtjs`, `nuxt-ui`, `svelte`, `swiftui`, `react-native`, `flutter`, `shadcn`, `jetpack-compose`
+**Available `--stack` values:** `html-tailwind`, `react`, `nextjs`, `astro`, `vue`, `nuxtjs`, `nuxt-ui`, `svelte`, `swiftui`, `react-native`, `flutter`, `shadcn`, `jetpack-compose`
+
+For this project, `--stack nextjs` and `--stack shadcn` are the relevant ones. Verify both resolve before relying on them in Phase 2:
+
+```bash
+python3 .claude/skills/ui-ux-pro-max/scripts/search.py "accessibility" --stack shadcn
+python3 .claude/skills/ui-ux-pro-max/scripts/search.py "images" --stack nextjs
+```
 
 ```bash
 # Color palette for a restaurant
