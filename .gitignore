@@ -37,3 +37,11 @@ yarn-error.log*
 playwright-cli-screenshots/
 *.png
 !docs/**/*.png
+
+# Written by the improve-animations / prototype skills
+plans/
+prototypes/
+
+# Python bytecode from bundled skills
+__pycache__/
+*.pyc
