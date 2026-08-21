@@ -1,8 +1,22 @@
-> **[Lee esto en espanol (README.es.md)](README.es.md)**
+<!-- Hero: regenerate with `npm run hero`, then bump ?v= below so GitHub's camo cache refetches. -->
+<picture>
+  <source media="(prefers-color-scheme: dark)"  srcset="docs/assets/hero-en-dark.png?v=1">
+  <source media="(prefers-color-scheme: light)" srcset="docs/assets/hero-en-light.png?v=1">
+  <img width="880" src="docs/assets/hero-en-light.png?v=1"
+       alt="Claude Web Builder by Tododeia. Describe your business, get a real website. Answer a few questions in plain English; Claude Code designs it, builds it, and puts it online. A terminal shows the repo being cloned, two questions answered for a bakery, and the finished page live on a Vercel URL. 21 bundled skills, 6 guided phases, 0 lines you write.">
+</picture>
 
 # Claude Web Builder
 
-Build a professional landing page in minutes. No coding experience needed.
+**Build a professional landing page in minutes. No coding experience needed.**
+
+[![License MIT](https://img.shields.io/github/license/Hainrixz/claude-webkit?style=flat-square&label=license&labelColor=2A241D&color=C2562F)](LICENSE)
+[![21 bundled skills](https://img.shields.io/badge/bundled_skills-21-C2562F?style=flat-square&labelColor=2A241D)](#bundled-skills)
+[![Next.js 16](https://img.shields.io/badge/Next.js-16-C2562F?style=flat-square&labelColor=2A241D)](#tech-stack)
+[![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS-4-C2562F?style=flat-square&labelColor=2A241D)](#tech-stack)
+[![Built for Claude Code](https://img.shields.io/badge/built_for-Claude_Code-C2562F?style=flat-square&labelColor=2A241D)](https://claude.com/product/claude-code)
+
+[Quick start](#quick-start-step-by-step) &middot; [What you get](#what-you-get) &middot; [The 21 skills](#bundled-skills) &middot; [How it works](#how-it-works) &middot; **[Leer en espanol](README.es.md)**
 
 Clone this repo, open it with Claude Code, answer a few questions about your business, and Claude builds, previews, and deploys your page.
 
@@ -141,7 +155,7 @@ You now have:
 
 ## Bundled Skills
 
-This project comes with **13 professional skills pre-installed** in `.claude/skills/`. They load automatically when Claude opens the project — you don't need to install anything extra.
+This project comes with **21 professional skills pre-installed** in `.claude/skills/`. They load automatically when Claude opens the project — you don't need to install anything extra.
 
 | Skill | What It Does |
 |-------|-------------|
@@ -158,6 +172,16 @@ This project comes with **13 professional skills pre-installed** in `.claude/ski
 | `ui-ux-pro-max` | Design intelligence database — 161 color palettes, 57 font pairings, 50+ styles |
 | `web-reader` | Analyzes reference websites the user likes |
 | `deep-research` | Systematic web research for better industry-specific copy |
+| `emil-design-eng` | Emil Kowalski's craft rules — the details that make a page feel expensive instead of generic |
+| `animate` | Builds each animation with the right curve and speed, or tells you not to animate it at all |
+| `review-animations` | Strict motion review that catches sluggish easing and animation that fights the reader |
+| `find-animation-opportunities` | Finds the few spots that genuinely benefit from motion, and rejects the rest |
+| `animation-vocabulary` | Turns "that swooshy thing" into the actual name, so you can ask for it precisely |
+| `apple-design` | Apple's fluid-motion, gesture, and materials playbook, translated to the web |
+| `prototype` | Builds 3 different versions of one section behind a picker so you can choose live |
+| `improve-animations` | Audits motion across a whole site and writes a fix plan (for bigger projects) |
+
+The last eight come from [emilkowalski/skills](https://github.com/emilkowalski/skills) (MIT, (c) 2026 Emil Kowalski). Sources, the pinned commit, and every local change are documented in [`.claude/skills/ATTRIBUTION.md`](.claude/skills/ATTRIBUTION.md).
 
 ---
 
@@ -306,11 +330,11 @@ flowchart TD
 
 ## Tech Stack
 
-- Next.js 15+ (App Router)
+- Next.js 16 (App Router)
 - Tailwind CSS 4
 - shadcn/ui
 - TypeScript
-- Framer Motion
+- Motion (`motion/react`)
 
 ## Project Structure
 
@@ -318,8 +342,8 @@ flowchart TD
 claude-webkit/
 ├── CLAUDE.md                        # Instructions for Claude (the brain)
 ├── .claude/
-│   ├── settings.local.json          # Tool permissions
-│   └── skills/                      # 13 bundled skills (auto-loaded)
+│   ├── settings.json                # Tool permissions (project defaults)
+│   └── skills/                      # 21 bundled skills (auto-loaded)
 │       ├── frontend-design/         # Design methodology + 7 reference docs
 │       ├── shadcn-ui/               # Component library guide
 │       ├── humanizer/               # AI writing pattern removal
@@ -332,7 +356,16 @@ claude-webkit/
 │       ├── seo-audit/              # SEO analysis + references
 │       ├── ui-ux-pro-max/          # Design intelligence database (161 palettes, 57 fonts)
 │       ├── web-reader/             # Web content extraction for reference sites
-│       └── deep-research/          # Systematic web research
+│       ├── deep-research/          # Systematic web research
+│       ├── ATTRIBUTION.md          # Upstream sources, licenses, local changes
+│       ├── emil-design-eng/        # Emil Kowalski's design engineering rules
+│       ├── animate/                # Build an animation right + 13 recipes
+│       ├── review-animations/      # Strict motion gate + standards catalog
+│       ├── find-animation-opportunities/  # Where motion actually helps
+│       ├── animation-vocabulary/   # Name a motion effect precisely
+│       ├── apple-design/           # Apple fluid-motion principles for the web
+│       ├── prototype/              # 3 variants of one piece behind a picker
+│       └── improve-animations/     # Motion audit + implementation plans
 ├── docs/
 │   ├── system-prompt.md             # Agent personality (English)
 │   ├── system-prompt-es.md          # Agent personality (Spanish)

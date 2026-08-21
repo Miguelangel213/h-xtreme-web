@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<title>Claude Web Builder — README hero</title>
+
+<!-- 1. Theme + language BEFORE Tailwind, so there is exactly one JIT flush. -->
+<script>
+(function () {
+  var q = new URLSearchParams(location.search);
+  var r = document.documentElement;
+  if (q.get('theme') === 'dark') r.classList.add('dark');
+  var lang = q.get('lang') === 'es' ? 'es' : 'en';
+  r.setAttribute('lang', lang);
+  r.setAttribute('data-lang', lang);
+})();
+</script>
+
+<!-- 2. Fonts. display=block on purpose: a premature screenshot must be obviously
+     blank, never silently rendered in a fallback face. (design-guide mandates
+     swap — that rule is for the LANDING PAGES Claude builds, where CLS matters.
+     Do not "fix" this to swap.) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=JetBrains+Mono:wght@400;500&family=Work+Sans:wght@400;500;600&display=block">
+
+<!-- 3. Raw tokens. Plain CSS, never touched by Tailwind.
+     html.dark (0,1,1) outranks :root (0,1,0) regardless of injection order. -->
+<style>
+  :root {
+    --c-bg:        oklch(97.2% 0.008 85);
+    --c-sunk:      oklch(94.2% 0.012 85);
+    --c-ink:       oklch(23%   0.018 65);
+    --c-ink-2:     oklch(43%   0.016 65);
+    --c-rule:      oklch(88%   0.012 85);
+    --c-ember:     oklch(58%   0.155 42);
+    --c-ember-ink: oklch(45%   0.140 42);
+    --c-moss:      oklch(52%   0.060 145);
+    --hero-h1-weight: 600;
+    --hero-h1-track: -0.020em;
+  }
+  /* Dark is NOT an inversion: different surfaces, reduced accent chroma,
+     lighter H1 weight, looser tracking — the four dark-mode rules. */
+  html.dark {
+    --c-bg:        oklch(20.5% 0.014 65);
+    --c-sunk:      oklch(25%   0.016 65);
+    --c-ink:       oklch(93%   0.010 85);
+    --c-ink-2:     oklch(72%   0.012 75);
+    --c-rule:      oklch(33%   0.014 65);
+    --c-ember:     oklch(70%   0.115 45);
+    --c-ember-ink: oklch(74%   0.110 45);
+    --c-moss:      oklch(66%   0.045 145);
+    --hero-h1-weight: 500;
+    --hero-h1-track: -0.005em;
+  }
+  html, body { margin: 0; padding: 0; background: var(--c-bg); }
+  body { font-family: "Work Sans", sans-serif; -webkit-font-smoothing: antialiased; }
+  .display { font-family: Fraunces, Georgia, serif; font-optical-sizing: auto;
+             font-variation-settings: "opsz" 144; }
+  .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+  /* Language switch is pure CSS — zero DOM mutation after load, so Tailwind's
+     MutationObserver never re-flushes and the readiness gate cannot go stale. */
+  html[data-lang="en"] [data-lang="es"] { display: none !important; }
+  html[data-lang="es"] [data-lang="en"] { display: none !important; }
+</style>
+
+<!-- 4. Tailwind theme mapping. This is the @theme pattern the repo's own
+     design-guide now teaches — tokens here become real utilities. -->
+<style type="text/tailwindcss">
+  @theme {
+    --color-canvas:    var(--c-bg);
+    --color-sunk:      var(--c-sunk);
+    --color-ink:       var(--c-ink);
+    --color-ink-2:     var(--c-ink-2);
+    --color-rule:      var(--c-rule);
+    --color-ember:     var(--c-ember);
+    --color-ember-ink: var(--c-ember-ink);
+    --color-moss:      var(--c-moss);
+  }
+</style>
+
+<!-- 5. Tailwind v4 in-browser JIT, EXACT pin (not @4 — floating breaks determinism). -->
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+</head>
+
+<body>
+<!-- Readiness sentinel: pl-[37px] is a value no UA stylesheet produces. -->
+<span id="tw-sentinel" class="pl-[37px] absolute opacity-0 pointer-events-none"></span>
+
+<section id="hero"
+  class="relative w-[1280px] h-[512px] overflow-hidden bg-canvas text-ink
+         grid grid-cols-[700px_1fr] gap-x-12 px-16 py-14">
+
+  <!-- background dot field, right side only -->
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0 opacity-70"
+       style="background-image:radial-gradient(circle at 1px 1px,var(--c-rule) 1px,transparent 0);
+              background-size:24px 24px;
+              -webkit-mask-image:linear-gradient(to right,transparent 42%,black 78%);
+              mask-image:linear-gradient(to right,transparent 42%,black 78%);"></div>
+
+  <!-- LEFT -->
+  <div class="relative flex flex-col justify-between">
+    <div>
+      <div class="flex items-center gap-3">
+        <span class="block h-[2px] w-7 bg-ember"></span>
+        <span class="text-[13px] font-semibold uppercase tracking-[0.16em] text-ink">Claude Web Builder</span>
+        <span class="text-[13px] text-ink-2">by Tododeia</span>
+      </div>
+
+      <h1 id="hero-h1" class="display mt-6 text-[56px] leading-[1.05] m-0"
+          style="font-weight:var(--hero-h1-weight);letter-spacing:var(--hero-h1-track);">
+        <span data-lang="en">Describe your business.<br>Get a <span class="text-ember-ink">real</span> website.</span>
+        <span data-lang="es">Describe tu negocio.<br>Ten un sitio <span class="text-ember-ink">de verdad</span>.</span>
+      </h1>
+
+      <p id="hero-sub" class="mt-6 mb-0 max-w-[560px] text-[19px] leading-[1.5] text-ink-2">
+        <span data-lang="en">Answer a few questions in plain English. Claude Code designs it, builds it, and puts it online.</span>
+        <span data-lang="es">Responde unas preguntas en espa&ntilde;ol. Claude Code lo dise&ntilde;a, lo construye y lo publica.</span>
+      </p>
+    </div>
+
+    <div class="border-t border-rule pt-5 flex gap-x-12 [font-variant-numeric:tabular-nums]">
+      <div>
+        <div class="display text-[30px] font-semibold leading-none text-ink">21</div>
+        <div class="mt-1.5 text-[11px] font-medium uppercase tracking-[0.12em] text-ink-2">
+          <span data-lang="en">Bundled skills</span><span data-lang="es">Skills incluidos</span>
+        </div>
+      </div>
+      <div>
+        <div class="display text-[30px] font-semibold leading-none text-ink">6</div>
+        <div class="mt-1.5 text-[11px] font-medium uppercase tracking-[0.12em] text-ink-2">
+          <span data-lang="en">Guided phases</span><span data-lang="es">Fases guiadas</span>
+        </div>
+      </div>
+      <div>
+        <div class="display text-[30px] font-semibold leading-none text-ink">0</div>
+        <div class="mt-1.5 text-[11px] font-medium uppercase tracking-[0.12em] text-ink-2">
+          <span data-lang="en">Lines you write</span><span data-lang="es">L&iacute;neas que escribes</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: terminal -->
+  <div class="relative">
+    <div class="w-[392px] -mt-4 rounded-[10px] border border-rule bg-sunk"
+         style="box-shadow:12px 12px 0 0 var(--c-rule);">
+      <div class="flex h-9 items-center justify-between border-b border-rule px-4">
+        <div class="flex gap-2">
+          <span class="size-[9px] rounded-full bg-ember"></span>
+          <span class="size-[9px] rounded-full bg-rule"></span>
+          <span class="size-[9px] rounded-full bg-rule"></span>
+        </div>
+        <span class="mono text-[11px] text-ink-2">claude-webkit</span>
+      </div>
+
+      <div id="term" class="mono px-5 py-4 text-[12px] leading-[1.9] tracking-[-0.01em] whitespace-pre"><span class="text-ember">$</span> git clone github.com/Hainrixz/claude-webkit
+<span class="text-ember">$</span> cd claude-webkit &amp;&amp; claude
+
+<span data-lang="en"><span class="font-medium">&rsaquo; What&rsquo;s your business called?</span>
+<span class="text-ink-2">  Lolita&rsquo;s Bakery</span>
+<span class="font-medium">&rsaquo; What should visitors do?</span>
+<span class="text-ink-2">  Order a cake</span></span><span data-lang="es"><span class="font-medium">&rsaquo; &iquest;C&oacute;mo se llama tu negocio?</span>
+<span class="text-ink-2">  Panader&iacute;a Lolita</span>
+<span class="font-medium">&rsaquo; &iquest;Qu&eacute; quieres que hagan?</span>
+<span class="text-ink-2">  Pedir un pastel</span></span>
+
+<span class="inline-flex items-center gap-2"><svg viewBox="0 0 12 12" class="size-3 shrink-0 text-moss" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6.4 4.6 9 10 3"/></svg><span data-lang="en">Design system ready</span><span data-lang="es">Sistema de dise&ntilde;o listo</span></span>
+<span class="inline-flex items-center gap-2"><svg viewBox="0 0 12 12" class="size-3 shrink-0 text-moss" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6.4 4.6 9 10 3"/></svg><span data-lang="en">7 sections built</span><span data-lang="es">7 secciones construidas</span></span>
+<span class="inline-flex items-center gap-2"><svg viewBox="0 0 12 12" class="size-3 shrink-0 text-moss" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6.4 4.6 9 10 3"/></svg><span data-lang="en">Live at lolitas-bakery.vercel.app</span><span data-lang="es">En vivo en panaderia-lolita.vercel.app</span></span></div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

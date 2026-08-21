@@ -1,8 +1,22 @@
-> **[Read this in English (README.md)](README.md)**
+<!-- Hero: regenera con `npm run hero`, luego sube el ?v= para que camo de GitHub recargue la imagen. -->
+<picture>
+  <source media="(prefers-color-scheme: dark)"  srcset="docs/assets/hero-es-dark.png?v=1">
+  <source media="(prefers-color-scheme: light)" srcset="docs/assets/hero-es-light.png?v=1">
+  <img width="880" src="docs/assets/hero-es-light.png?v=1"
+       alt="Claude Web Builder de Tododeia. Describe tu negocio y ten un sitio de verdad. Responde unas preguntas en espanol; Claude Code lo disena, lo construye y lo publica. Una terminal muestra el repo clonandose, dos preguntas respondidas para una panaderia, y la pagina terminada en vivo en una URL de Vercel. 21 skills incluidos, 6 fases guiadas, 0 lineas que escribes.">
+</picture>
 
 # Claude Web Builder
 
-Construye una pagina web profesional en minutos. No necesitas saber programar.
+**Construye una pagina web profesional en minutos. No necesitas saber programar.**
+
+[![Licencia MIT](https://img.shields.io/github/license/Hainrixz/claude-webkit?style=flat-square&label=licencia&labelColor=2A241D&color=C2562F)](LICENSE)
+[![21 skills incluidos](https://img.shields.io/badge/skills_incluidos-21-C2562F?style=flat-square&labelColor=2A241D)](#skills-incluidos)
+[![Next.js 16](https://img.shields.io/badge/Next.js-16-C2562F?style=flat-square&labelColor=2A241D)](#stack-tecnologico)
+[![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS-4-C2562F?style=flat-square&labelColor=2A241D)](#stack-tecnologico)
+[![Hecho para Claude Code](https://img.shields.io/badge/hecho_para-Claude_Code-C2562F?style=flat-square&labelColor=2A241D)](https://claude.com/product/claude-code)
+
+[Inicio rapido](#inicio-rapido-paso-a-paso) &middot; [Que obtienes](#que-obtienes) &middot; [Los 21 skills](#skills-incluidos) &middot; [Como funciona](#como-funciona) &middot; **[Read in English](README.md)**
 
 Clona este proyecto, abrelo con Claude Code, responde unas preguntas sobre tu negocio, y Claude disena, construye, te muestra y publica tu pagina.
 
@@ -139,7 +153,7 @@ Ahora tienes:
 
 ## Skills Incluidos
 
-Este proyecto viene con **13 skills profesionales pre-instalados** en `.claude/skills/`. Se cargan automaticamente cuando Claude abre el proyecto — no necesitas instalar nada extra.
+Este proyecto viene con **21 skills profesionales pre-instalados** en `.claude/skills/`. Se cargan automaticamente cuando Claude abre el proyecto — no necesitas instalar nada extra.
 
 | Skill | Que hace |
 |-------|---------|
@@ -156,6 +170,16 @@ Este proyecto viene con **13 skills profesionales pre-instalados** en `.claude/s
 | `ui-ux-pro-max` | Base de datos de inteligencia de diseno — 161 paletas de colores, 57 pares de fuentes, 50+ estilos |
 | `web-reader` | Analiza sitios web de referencia que le gusten al usuario |
 | `deep-research` | Investigacion web sistematica para mejor copy especifico de la industria |
+| `emil-design-eng` | Reglas de oficio de Emil Kowalski — los detalles que hacen que una pagina se sienta cara y no generica |
+| `animate` | Construye cada animacion con la curva y la velocidad correctas, o te dice que mejor no la animes |
+| `review-animations` | Revision estricta del movimiento: detecta easing lento y animaciones que estorban |
+| `find-animation-opportunities` | Encuentra los pocos lugares que si ganan con movimiento, y descarta el resto |
+| `animation-vocabulary` | Convierte "esa cosa que se desliza" en el nombre real para que puedas pedirlo con precision |
+| `apple-design` | El manual de movimiento fluido, gestos y materiales de Apple, traducido a la web |
+| `prototype` | Construye 3 versiones distintas de una seccion detras de un selector para que elijas en vivo |
+| `improve-animations` | Audita el movimiento de todo un sitio y escribe un plan de arreglos (para proyectos grandes) |
+
+Los ultimos ocho vienen de [emilkowalski/skills](https://github.com/emilkowalski/skills) (MIT, (c) 2026 Emil Kowalski). Las fuentes, el commit fijado y cada cambio local estan documentados en [`.claude/skills/ATTRIBUTION.md`](.claude/skills/ATTRIBUTION.md).
 
 ---
 
@@ -304,11 +328,11 @@ flowchart TD
 
 ## Stack Tecnologico
 
-- Next.js 15+ (App Router)
+- Next.js 16 (App Router)
 - Tailwind CSS 4
 - shadcn/ui
 - TypeScript
-- Framer Motion
+- Motion (`motion/react`)
 
 ## Estructura del Proyecto
 
@@ -317,7 +341,7 @@ claude-webkit/
 ├── CLAUDE.md                        # Instrucciones para Claude (el cerebro)
 ├── .claude/
 │   ├── settings.local.json          # Permisos de herramientas
-│   └── skills/                      # 13 skills incluidos (se cargan solos)
+│   └── skills/                      # 21 skills incluidos (se cargan solos)
 │       ├── frontend-design/         # Metodologia de diseno + 7 docs de referencia
 │       ├── shadcn-ui/               # Guia de componentes
 │       ├── humanizer/               # Eliminacion de patrones IA
@@ -330,7 +354,16 @@ claude-webkit/
 │       ├── seo-audit/              # Analisis SEO + referencias
 │       ├── ui-ux-pro-max/          # Base de datos de inteligencia de diseno (161 paletas, 57 fuentes)
 │       ├── web-reader/             # Extraccion de contenido web para sitios de referencia
-│       └── deep-research/          # Investigacion web sistematica
+│       ├── deep-research/          # Investigacion web sistematica
+│       ├── ATTRIBUTION.md          # Fuentes upstream, licencias, cambios locales
+│       ├── emil-design-eng/        # Reglas de ingenieria de diseno de Emil Kowalski
+│       ├── animate/                # Construir una animacion bien + 13 recetas
+│       ├── review-animations/      # Revision estricta de movimiento + estandares
+│       ├── find-animation-opportunities/  # Donde el movimiento si ayuda
+│       ├── animation-vocabulary/   # Nombrar un efecto de movimiento con precision
+│       ├── apple-design/           # Principios de movimiento fluido de Apple
+│       ├── prototype/              # 3 variantes de una pieza detras de un selector
+│       └── improve-animations/     # Auditoria de movimiento + planes
 ├── docs/
 │   ├── system-prompt.md             # Personalidad del agente (ingles)
 │   ├── system-prompt-es.md          # Personalidad del agente (espanol)
