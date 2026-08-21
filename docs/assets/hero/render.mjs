@@ -20,7 +20,7 @@ import path from 'node:path';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const OUT  = path.resolve(HERE, '..');            // docs/assets
-const W = 1280, H = 512, DSF = 2;
+const W = 1280, H = 640, DSF = 2;
 const BUDGET_WARN = 400_000, BUDGET_FAIL = 600_000;
 
 const VARIANTS = [
@@ -32,15 +32,15 @@ const VARIANTS = [
 
 // Every face we actually paint. If one is missing at shot time we throw.
 const FACES = [
-  '600 56px Fraunces', '500 56px Fraunces', '600 30px Fraunces',
-  '400 19px "Work Sans"', '500 11px "Work Sans"', '600 13px "Work Sans"', '400 13px "Work Sans"',
-  '400 12px "JetBrains Mono"', '500 12px "JetBrains Mono"', '400 11px "JetBrains Mono"',
+  '700 106px Fraunces', '600 106px Fraunces',
+  '800 24px Archivo', '600 12px Archivo',
+  '400 11px "JetBrains Mono"', '500 12px "JetBrains Mono"',
 ];
 // Passed to document.fonts.load() so the right unicode-range subset is fetched.
 // Google serves latin / latin-ext as separate @font-face with unicode-range; a
 // subset is only downloaded once a matching codepoint is painted.
 const GLYPHS =
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,:;$&/-·¿?’›áéíóúñÁÉÍÓÚÑ';
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,:;$&/-·¿?©’›áéíóúñÁÉÍÓÚÑ';
 
 /* ---------- static server (no deps, avoids a file:// origin) ---------- */
 const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript',
@@ -122,9 +122,9 @@ async function waitPainted(page) {
   const bad = await page.evaluate(() => {
     const out = [];
     const hero = document.getElementById('hero').getBoundingClientRect();
-    if (Math.round(hero.width) !== 1280 || Math.round(hero.height) !== 512)
-      out.push(`hero is ${Math.round(hero.width)}x${Math.round(hero.height)}, expected 1280x512`);
-    for (const id of ['hero-h1', 'hero-sub', 'term']) {
+    if (Math.round(hero.width) !== 1280 || Math.round(hero.height) !== 640)
+      out.push(`hero is ${Math.round(hero.width)}x${Math.round(hero.height)}, expected 1280x640`);
+    for (const id of ['hero-h1', 'caption', 'chip', 'rail']) {
       const el = document.getElementById(id);
       // Horizontal stays strict: this is the guard that catches a long ES string.
       if (el.scrollWidth > el.clientWidth + 1) out.push(`#${id} overflows by ${el.scrollWidth - el.clientWidth}px`);

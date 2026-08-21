@@ -1,9 +1,9 @@
 <!-- Hero: regenera con `npm run hero`, luego sube el ?v= para que camo de GitHub recargue la imagen. -->
 <picture>
-  <source media="(prefers-color-scheme: dark)"  srcset="docs/assets/hero-es-dark.png?v=1">
-  <source media="(prefers-color-scheme: light)" srcset="docs/assets/hero-es-light.png?v=1">
-  <img width="880" src="docs/assets/hero-es-light.png?v=1"
-       alt="Claude Web Builder de Tododeia. Describe tu negocio y ten un sitio de verdad. Responde unas preguntas en espanol; Claude Code lo disena, lo construye y lo publica. Una terminal muestra el repo clonandose, dos preguntas respondidas para una panaderia, y la pagina terminada en vivo en una URL de Vercel. 21 skills incluidos, 6 fases guiadas, 0 lineas que escribes.">
+  <source media="(prefers-color-scheme: dark)"  srcset="docs/assets/hero-es-dark.png?v=2">
+  <source media="(prefers-color-scheme: light)" srcset="docs/assets/hero-es-light.png?v=2">
+  <img width="880" src="docs/assets/hero-es-light.png?v=2"
+       alt="Claude Web Builder de Tododeia. Describe tu negocio; Claude lo construye. Sin codigo, sin plantillas, una URL en vivo en minutos. Una terminal muestra la herramienta corriendo para una panaderia y la pagina terminada en vivo en una URL de Vercel. 21 skills incluidos, 6 fases guiadas, 0 lineas que escribes.">
 </picture>
 
 # Claude Web Builder
