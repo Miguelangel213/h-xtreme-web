@@ -50,3 +50,6 @@ __pycache__/
 /package.json
 /docs/*
 !/docs/brand-context-h-xtreme.md
+
+# Banner del README
+!/assets/banner.png

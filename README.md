@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner.png" alt="H-XTREME: streetwear colombiano. Esto no es ropa común. Esto es identidad." width="100%">
+</p>
+
 # H-XTREME
 
 **Esto no es ropa común. Esto es identidad.**
