@@ -48,6 +48,7 @@ site/
     └── components/     Secciones y efectos (hero, colección, cursor, etc.)
 docs/
 └── brand-context-h-xtreme.md   Identidad y tono de la marca
+.github/workflows/      Publicación automática en GitHub Pages
 ```
 
 ## Marca
@@ -64,6 +65,6 @@ docs/
 
 ## Créditos
 
-Fotos de [Unsplash](https://unsplash.com). Construido con la base de [claude-webkit](https://github.com/Hainrixz/claude-webkit) (licencia MIT, ver `LICENSE`).
+Fotos de [Unsplash](https://unsplash.com).
 
-© 2026 H-XTREME. Hecho en Colombia.
+© 2026 H-XTREME. Todos los derechos reservados. Hecho en Colombia.

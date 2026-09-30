@@ -43,3 +43,10 @@ prototypes/
 # Python bytecode from bundled skills
 __pycache__/
 *.pyc
+
+# Herramientas locales del agente WebKit (no forman parte del sitio)
+/.claude/
+/CLAUDE.md
+/package.json
+/docs/*
+!/docs/brand-context-h-xtreme.md
