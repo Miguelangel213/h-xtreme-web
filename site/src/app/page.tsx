@@ -121,12 +121,6 @@ export default function Home() {
             © 2026 H-XTREME. Hecho en Colombia. Fotos: Unsplash.
           </p>
         </div>
-        <p className="mt-8 text-center text-sm text-muted-foreground">
-          Built with Claude Web Builder by{" "}
-          <a href="https://tododeia.com" className="underline underline-offset-4">
-            Tododeia
-          </a>
-        </p>
       </footer>
     </div>
   );
